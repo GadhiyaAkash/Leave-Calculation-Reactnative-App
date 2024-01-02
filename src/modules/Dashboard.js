@@ -1,29 +1,22 @@
+import { Button } from "@rneui/themed";
 import React from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 function HomeScreen({ navigation }) {
     return (
         <View style={styles.container}>
-            <Text style={{ paddingBottom: 15 }}>Open up App.tsx to start working on your app!</Text>
-            <Button
-                title="Go to Details"
-                onPress={() => navigation.navigate('Info', {
-                    id: 1,
-                    name: 'Info page'
-                })}
-            />
+            <Button title="My Button" />
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
-  });
+});
 
-  
+
 export default HomeScreen;
