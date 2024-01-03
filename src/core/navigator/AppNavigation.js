@@ -18,8 +18,8 @@ function AppNavigation() {
                         headerBackVisible: false, 
                         animation: 'none',
                         headerTitle: (props) => <HeaderTitle {...props} /> }}>
-                        <Stack.Screen name="LeaveHistory" component={LeaveHistoryDashboard} />
                         <Stack.Screen name="AddLeave" component={LeaveAddScreen} />
+                        <Stack.Screen name="LeaveHistory" component={LeaveHistoryDashboard} />
                     </Stack.Navigator>
                 </NavigationContainer>
                 <StatusBar style="auto" />
