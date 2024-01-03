@@ -4,7 +4,7 @@ const AppTheme = createTheme({
     lightColors: {
         primary: 'red'
     },
-    mode: 'light',
+    mode: 'light'
 });
 
 export {

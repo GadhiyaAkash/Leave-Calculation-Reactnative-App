@@ -10,7 +10,7 @@ function HeaderTitle() {
                     uri: 'https://reactnative.dev/img/tiny_logo.png',
                 }}
             />
-            <Text style={{ paddingLeft: 10, fontSize: 20 }}>Header</Text>
+            <Text style={{ paddingLeft: 10, fontSize: 20 }}>Leave Management</Text>
         </>
     );
 }

@@ -1,75 +1,145 @@
-import { Button, Card, Icon, Text } from "@rneui/themed";
+import { Button, Card, Icon, ListItem, Text, useTheme } from "@rneui/themed";
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
 function HomeScreen({ navigation }) {
-
-    const DATA = [
+    const theme = useTheme();
+    const leaveData = [
         {
-            id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-            title: 'First Item',
+            id: 'carray_forward_leave',
+            title: 'Carray Forward Leave',
+            value: 10,
         },
         {
-            id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-            title: 'Second Item',
+            id: 'cl_taken',
+            title: 'CL Taken',
+            value: 5,
         },
         {
-            id: '58694a0f-3da1-471f-bd96-145571e29d72',
-            title: 'Third Item',
+            id: 'pl_taken',
+            title: 'PL Taken',
+            value: 2.5,
         },
         {
-            id: '58694a0f1-3da1-471f-bd96-145571e29d72',
-            title: 'Third Item',
+            id: 'total_available',
+            title: 'Total Available Leave',
+            value: 22.5,
         }
     ];
+
+    const leaveHistory = [
+        { id: "1", month: "January", total_leave_on_month_start: 10, leave_added: 1.25, cl_taken: 0, pl_taken: 2, available_on_month_end: 15 },
+        { id: "2", month: "February", total_leave_on_month_start: 10, leave_added: 1.25, cl_taken: 0, pl_taken: 2, available_on_month_end: 15 },
+        { id: "3", month: "March", total_leave_on_month_start: 10, leave_added: 1.25, cl_taken: 0, pl_taken: 2, available_on_month_end: 15 },
+        { id: "4", month: "April", total_leave_on_month_start: 10, leave_added: 1.25, cl_taken: 0, pl_taken: 2, available_on_month_end: 15 },
+        { id: "5", month: "May", total_leave_on_month_start: 10, leave_added: 1.25, cl_taken: 0, pl_taken: 2, available_on_month_end: 15 },
+        { id: "6", month: "June", total_leave_on_month_start: 10, leave_added: 1.25, cl_taken: 0, pl_taken: 2, available_on_month_end: 15 },
+        { id: "7", month: "July", total_leave_on_month_start: 10, leave_added: 1.25, cl_taken: 0, pl_taken: 2, available_on_month_end: 15 },
+        { id: "8", month: "August", total_leave_on_month_start: 10, leave_added: 1.25, cl_taken: 0, pl_taken: 2, available_on_month_end: 15 },
+        { id: "9", month: "September", total_leave_on_month_start: 10, leave_added: 1.25, cl_taken: 0, pl_taken: 2, available_on_month_end: 15 },
+        { id: "10", month: "October", total_leave_on_month_start: 10, leave_added: 1.25, cl_taken: 0, pl_taken: 2, available_on_month_end: 15 },
+        { id: "11", month: "November", total_leave_on_month_start: 10, leave_added: 1.25, cl_taken: 0, pl_taken: 2, available_on_month_end: 15 },
+        { id: "12", month: "December", total_leave_on_month_start: 10, leave_added: 1.25, cl_taken: 0, pl_taken: 2, available_on_month_end: 15 }
+    ]
+
+    const getHistoryContentLabel = (slug) => {
+        switch (slug) {
+            case 'total_leave_on_month_start':
+                return "Leave On Month Start";
+            case 'leave_added':
+                return "Leave Added";
+            case 'cl_taken':
+                return "CL Taken";
+            case 'pl_taken':
+                return "PL Taken";
+            case 'available_on_month_end':
+                return "Leave On Month End";
+            default:
+                break;
+        }
+    }
     return (
-        <FlatList
-            data={DATA}
-            numColumns={2}
-            renderItem={({ item }) =>
-                <View style={styles.container}>
-                    <Card>
-                        <Card.Title>HELLO WORLD</Card.Title>
-                        <Card.Divider />
-                        <Card.Image
-                            style={{ padding: 0 }}
-                            source={{
-                                uri: 'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
-                            }}
-                        />
-                        <Text style={{ marginBottom: 10 }}>
-                            The idea with React Native Elements is more about component
-                            structure than actual design.
-                        </Text>
-                        <Button
-                            icon={
-                                <Icon
-                                    name="code"
-                                    color="#ffffff"
-                                    iconStyle={{ marginRight: 10 }}
-                                />
-                            }
-                            buttonStyle={{
-                                borderRadius: 0,
-                                marginLeft: 0,
-                                marginRight: 0,
-                                marginBottom: 0,
-                            }}
-                            title="VIEW NOW"
-                        />
-                    </Card>
-                </View>
-            }
-            keyExtractor={item => item.id}
-        />
+        <>
+            <View style={{ height: '36%' }}>
+                <FlatList
+                    data={leaveData}
+                    numColumns={2}
+                    renderItem={({ item }) =>
+                        <View style={styles.cardContainer}>
+                            <Card containerStyle={styles.card}>
+                                <Card.Title>{item.title}</Card.Title>
+                                <Card.Divider />
+                                <Text style={styles.cardValue}>
+                                    {item.value}
+                                </Text>
+                            </Card>
+                        </View>
+                    }
+                    keyExtractor={item => item.id}
+                />
+            </View>
+            <View>
+                <Text h4 style={styles.leaveHistoryTitle}>Leave History</Text>
+                <FlatList
+                    data={leaveHistory}
+                    renderItem={({ item }) =>
+                        <View>
+                            <Card>
+                                <Card.Title>{item.month}</Card.Title>
+                                <Card.Divider />
+                                <View style={{ flexDirection: 'row', flexWrap: "wrap" }}>
+                                    <View style={{ width: '50%' }}>
+                                        <Text style={styles.label}>Leave On Month Start</Text>
+                                        <Text>
+                                            {item.total_leave_on_month_start}
+                                        </Text>
+                                    </View>
+                                    <View style={{ width: '50%' }}>
+                                        <Text style={styles.label}>Leave Added</Text>
+                                        <Text>
+                                            {item.leave_added}
+                                        </Text>
+                                    </View>
+                                    <View style={{ width: '50%' }}>
+                                        <Text style={styles.label}>Leave Added</Text>
+                                        <Text>
+                                            {item.leave_added}
+                                        </Text>
+                                    </View>
+                                    <View style={{ width: '50%' }}>
+                                        <Text style={styles.label}>Leave Added</Text>
+                                        <Text>
+                                            {item.leave_added}
+                                        </Text>
+                                    </View>
+                                </View>
+                            </Card>
+                        </View>
+                    }
+                    keyExtractor={item => item.id}
+                />
+            </View>
+        </>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    cardContainer: {
         flex: 1,
         width: '50%'
     },
+    card: {
+        minHeight: 120
+    },
+    cardValue: {
+        textAlign: "center"
+    },
+    leaveHistoryTitle: {
+        paddingLeft: 15
+    },
+    label: {
+        fontWeight: "bold"
+    }
 });
 
 

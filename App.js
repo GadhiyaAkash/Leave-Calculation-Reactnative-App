@@ -5,7 +5,6 @@ import { ThemeProvider } from '@rneui/themed';
 import { AppTheme } from './src/core/Theme/CoreTheme';
 
 export default function App() {
-
   return (
     <ThemeProvider theme={AppTheme}>
       <AppNavigation></AppNavigation>
