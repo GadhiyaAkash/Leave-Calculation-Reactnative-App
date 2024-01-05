@@ -55,6 +55,8 @@ function TextInputElement(props) {
 TextInputElement.defaultProps = {
     inputMode: "text",
     regex: new RegExp(""),
+    placeholderTextColor: '#24263F',
+    autoCapitalize: "none"
 };
 
 export default TextInputElement;

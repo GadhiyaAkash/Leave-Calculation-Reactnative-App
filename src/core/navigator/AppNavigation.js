@@ -14,12 +14,15 @@ function AppNavigation() {
         <>
             <SafeAreaProvider>
                 <NavigationContainer>
-                    <Stack.Navigator screenOptions={{ 
-                        headerBackVisible: false, 
-                        animation: 'none',
-                        headerTitle: (props) => <HeaderTitle {...props} /> }}>
-                        <Stack.Screen name="AddLeave" component={LeaveAddScreen} />
+                    <Stack.Navigator
+                        initialRouteName='AddLeave'
+                        screenOptions={{
+                            headerBackVisible: false,
+                            animation: 'none',
+                            headerTitle: (props) => <HeaderTitle {...props} />
+                        }}>
                         <Stack.Screen name="LeaveHistory" component={LeaveHistoryDashboard} />
+                        <Stack.Screen name="AddLeave" component={LeaveAddScreen} />
                     </Stack.Navigator>
                 </NavigationContainer>
                 <StatusBar style="auto" />

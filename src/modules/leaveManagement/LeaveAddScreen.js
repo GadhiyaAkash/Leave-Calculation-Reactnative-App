@@ -17,15 +17,20 @@ const leaveValidationSchema = ValidationSchema([
  * Create a number fields CL and PL with  default value is 0.
  * Create two button Cancel and Submit. Validation should be fire on submit button
  */
-export default LeaveAddScreen = () => {
+export default LeaveAddScreen = ({ navigation }) => {
 
     const handleLogin = (value) => {
         console.log("values::", value);
     };
+    const cancelLeaveAdd = () => {
+        navigation.navigate("LeaveHistory");
+    };
 
     return (
         <View style={styles.container}>
-            <Text h4 style={styles.title}>Add New Leave</Text>
+            <Text h4 style={styles.title}>
+                Add New Leave
+            </Text>
             <Formik
                 initialValues={{ cl_taken: "", pl_taken: "" }}
                 onSubmit={handleLogin}
@@ -37,22 +42,16 @@ export default LeaveAddScreen = () => {
                             component={TextInputElement}
                             placeholder="Enter CL (Casual Leave)"
                             name="cl_taken"
-                            autoCapitalize="none"
                             inputContainerStyle={styles.textInput}
-                            placeholderTextColor={'#24263F'}
                         />
-
                         <Field
                             component={TextInputElement}
                             placeholder="Enter PL (Paid Leave)"
                             name="pl_taken"
-                            autoCapitalize="none"
                             inputContainerStyle={styles.textInput}
-                            placeholderTextColor={'#24263F'}
                         />
-
                         <View style={styles.buttonsContainer}>
-                            <Button type="outline">Cancel</Button>
+                            <Button type="outline" onPress={cancelLeaveAdd}>Cancel</Button>
                             <Button onPress={handleSubmit}>Submit</Button>
                         </View>
                     </>
@@ -64,7 +63,8 @@ export default LeaveAddScreen = () => {
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: 15
+        paddingHorizontal: 15,
+        flex: 1
     },
     buttonsContainer: {
         display: "flex",
