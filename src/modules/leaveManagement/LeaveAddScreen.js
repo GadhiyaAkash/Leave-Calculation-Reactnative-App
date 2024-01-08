@@ -1,9 +1,10 @@
 import { Button, Text } from "@rneui/themed"
 import { Field, Formik } from "formik"
-import React from "react"
+import React, { useState } from "react"
 import { StyleSheet, TextInput, View } from "react-native"
 import ValidationSchema from "../../core/validationSchema/ValidationSchema";
 import TextInputElement from "../../core/formElements/TextInputElement";
+import DropdownElement from "../../core/formElements/DropdownElement";
 
 const leaveValidationSchema = ValidationSchema([
     { fieldName: "cl_taken", validationType: "required" },
@@ -20,11 +21,26 @@ const leaveValidationSchema = ValidationSchema([
 export default LeaveAddScreen = ({ navigation }) => {
 
     const handleLogin = (value) => {
-        console.log("values::", value);
+        console.log("values/-------------::", value);
     };
     const cancelLeaveAdd = () => {
         navigation.navigate("LeaveHistory");
     };
+
+    const [monthOption, setMonthOption] = useState([
+        { label: "January", value: "January" },
+        { label: "February", value: "February" },
+        { label: "March", value: "March" },
+        { label: "April", value: "April" },
+        { label: "May", value: "May" },
+        { label: "June", value: "June" },
+        { label: "July", value: "July" },
+        { label: "August", value: "August" },
+        { label: "September", value: "September" },
+        { label: "October", value: "October" },
+        { label: "November", value: "November" },
+        { label: "December", value: "December" }
+    ]);
 
     return (
         <View style={styles.container}>
@@ -32,12 +48,19 @@ export default LeaveAddScreen = ({ navigation }) => {
                 Add New Leave
             </Text>
             <Formik
-                initialValues={{ cl_taken: "", pl_taken: "" }}
+                initialValues={{ cl_taken: "1", pl_taken: "0", month: 'January' }}
                 onSubmit={handleLogin}
                 validationSchema={leaveValidationSchema}
             >
                 {({ handleSubmit, values }) => (
                     <>
+                        <Field
+                            component={DropdownElement}
+                            name="month"
+                            value={values.month}
+                            options={monthOption}
+                            inputContainerStyle={styles.textInput}
+                        />
                         <Field
                             component={TextInputElement}
                             placeholder="Enter CL (Casual Leave)"
