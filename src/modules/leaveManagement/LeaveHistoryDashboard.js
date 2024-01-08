@@ -4,6 +4,7 @@ import { FlatList, StyleSheet, View } from "react-native";
 import LeaveHistoryList from "./components/LeaveHistoryList";
 import BasicLeaveInfo from "./components/BasicLeaveInfo";
 import { getAllManualLists } from "../../core/localDatabase/SqlQuery";
+import { defaultHistoryData } from "./constant";
 
 export default LeaveHistoryDashboard = ({ navigation }) => {
     const [loaded, setLoaded] = useState(false);
@@ -11,30 +12,15 @@ export default LeaveHistoryDashboard = ({ navigation }) => {
         navigation.navigate("AddLeave")
     }
 
-    const [history, setHistory] = useState(
-        [
-            { id: 1, month: "January", cl_taken: 0, pl_taken: 0 },
-            { id: 2, month: "February", cl_taken: 0, pl_taken: 0 },
-            { id: 3, month: "March", cl_taken: 0, pl_taken: 0 },
-            { id: 4, month: "April", cl_taken: 0, pl_taken: 0 },
-            { id: 5, month: "May", cl_taken: 0, pl_taken: 0 },
-            { id: 6, month: "June", cl_taken: 0, pl_taken: 0 },
-            { id: 7, month: "July", cl_taken: 0, pl_taken: 0 },
-            { id: 8, month: "August", cl_taken: 0, pl_taken: 0 },
-            { id: 9, month: "September", cl_taken: 0, pl_taken: 0 },
-            { id: 10, month: "October", cl_taken: 0, pl_taken: 0 },
-            { id: 11, month: "November", cl_taken: 0, pl_taken: 0 },
-            { id: 12, month: "December", cl_taken: 0, pl_taken: 0 }
-        ]
-    );
+    
+    const [history, setHistory] = useState([]);
 
     let totalLeaveOnMonthStart = 0;
     const monthlyLeave = 1.25;
 
     const getHistoryData = async () => {
         let res = await getAllManualLists();
-        console.log("res::", res);
-        let cloneHistory = [...history];
+        let cloneHistory = [...defaultHistoryData];
         cloneHistory = cloneHistory.map((item) => {
             if (res.length) {
                 let hasData = res.find((data1) => {
@@ -52,15 +38,18 @@ export default LeaveHistoryDashboard = ({ navigation }) => {
             totalLeaveOnMonthStart = item.available_on_month_end;
             return item;
         });
-        console.log("------------------------cloneHistory::", cloneHistory);
         setHistory(cloneHistory);
         setLoaded(true)
     };
-
     useEffect(() => {
-        console.log("=============================================");
-        getHistoryData();
-    }, []);
+        const unsubscribe = navigation.addListener('focus', () => {
+            setHistory([]);
+            getHistoryData();
+        });
+    
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+      }, [navigation]);
 
     return (
         <>
