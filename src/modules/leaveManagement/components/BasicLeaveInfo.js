@@ -1,59 +1,46 @@
 import { Card, Text } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-import { getAllManualLists } from "../../../core/localDatabase/SqlQuery";
 
-export default BasicLeaveInfo = () => {
+export default BasicLeaveInfo = ({history}) => {
     const [basicInfo, setBasicInfo] = useState([
         {
             id: 'carray_forward_leave',
             title: 'Carray Forward Leave',
-            value: 10,
+            value: 0,
         }
-    ]);
+    ]); 
 
-    function sumArrayElements(arr) {
-        let sum = 0;
-        for (let element of arr) {
-            if (typeof element === 'string') {
-                sum += parseFloat(element) || 0;
-            } else if (typeof element === 'number') {
-                sum += element;
-            }
-        }
-        return sum;
-    }
+    let totalLeaveOnMonthStart = 0;
+    let clTaken = 0, plTaken = 0;
 
-    const getTotalCL = (allData, key) => {
-        let data = allData.map((data) => {
-            return data[key];
+    const getHistoryData = async () => {
+        let cloneHistory = [...history];
+        cloneHistory = cloneHistory.map((item) => {
+            item.total_leave_on_month_start = totalLeaveOnMonthStart;
+            item.available_on_month_end = item.total_leave_on_month_start + item.leave_added - item.cl_taken - item.pl_taken;
+            totalLeaveOnMonthStart = item.available_on_month_end;
+            item.cl_taken = typeof item.cl_taken === 'string' ? parseFloat(item.cl_taken) : item.cl_taken; 
+            item.pl_taken = typeof item.pl_taken === 'string' ? parseFloat(item.pl_taken) : item.pl_taken; 
+            clTaken = item.cl_taken + clTaken;
+            plTaken = item.pl_taken + plTaken;
+            return item;
         });
-        data = sumArrayElements(data);
-        return data;
-    }
-
-    const getLists = async (data) => {
-        const res = await getAllManualLists();
-        return res;
-    };
-
-    const getHistoryData = async (data) => {
-        let res = await getLists();
-        let cloneInfo = [...basicInfo];
         var dummyArray = [{
             id: 'cl_taken',
             title: 'CL Taken',
-            value: getTotalCL(res, 'cl_taken')
+            value: clTaken
         }, {
             id: 'pl_taken',
             title: 'PL Taken',
-            value: getTotalCL(res, 'pl_taken'),
+            value: plTaken,
         }, {
             id: 'total_available',
             title: 'Total Available Leave',
-            value: 'TODO',
+            value: totalLeaveOnMonthStart,
         }];
-        cloneInfo = [...basicInfo, ...dummyArray]
+        let cloneInfo = [...basicInfo];
+        cloneInfo = [...cloneInfo, ...dummyArray];
         setBasicInfo(cloneInfo);
     };
 
