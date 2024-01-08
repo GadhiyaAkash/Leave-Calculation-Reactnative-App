@@ -15,7 +15,6 @@ function AppNavigation() {
             <SafeAreaProvider>
                 <NavigationContainer>
                     <Stack.Navigator
-                        initialRouteName='AddLeave'
                         screenOptions={{
                             headerBackVisible: false,
                             animation: 'none',

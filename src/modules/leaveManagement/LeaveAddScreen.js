@@ -5,11 +5,11 @@ import { StyleSheet, TextInput, View } from "react-native"
 import ValidationSchema from "../../core/validationSchema/ValidationSchema";
 import TextInputElement from "../../core/formElements/TextInputElement";
 import DropdownElement from "../../core/formElements/DropdownElement";
+import { insertProcedures } from "../../core/localDatabase/SqlQuery";
 
 const leaveValidationSchema = ValidationSchema([
     { fieldName: "cl_taken", validationType: "required" },
     { fieldName: "pl_taken", validationType: "required" }
-
 ]);
 
 /**
@@ -22,24 +22,34 @@ export default LeaveAddScreen = ({ navigation }) => {
 
     const handleLogin = (value) => {
         console.log("values/-------------::", value);
+        insertOfflineData(value);
     };
     const cancelLeaveAdd = () => {
         navigation.navigate("LeaveHistory");
     };
 
+    const insertOfflineData = async (data) => {
+        const res = await insertProcedures({
+            id: data.month,
+            ...data,
+        });
+        console.log("INTERSETED RES::", res);
+        return res;
+    };
+
     const [monthOption, setMonthOption] = useState([
-        { label: "January", value: "January" },
-        { label: "February", value: "February" },
-        { label: "March", value: "March" },
-        { label: "April", value: "April" },
-        { label: "May", value: "May" },
-        { label: "June", value: "June" },
-        { label: "July", value: "July" },
-        { label: "August", value: "August" },
-        { label: "September", value: "September" },
-        { label: "October", value: "October" },
-        { label: "November", value: "November" },
-        { label: "December", value: "December" }
+        { label: "January", value: 1 },
+        { label: "February", value: 2 },
+        { label: "March", value: 3 },
+        { label: "April", value: 4 },
+        { label: "May", value: 5 },
+        { label: "June", value: 6 },
+        { label: "July", value: 7 },
+        { label: "August", value: 8 },
+        { label: "September", value: 9 },
+        { label: "October", value: 10 },
+        { label: "November", value: 11 },
+        { label: "December", value: 12 }
     ]);
 
     return (
@@ -48,7 +58,7 @@ export default LeaveAddScreen = ({ navigation }) => {
                 Add New Leave
             </Text>
             <Formik
-                initialValues={{ cl_taken: "1", pl_taken: "0", month: 'January' }}
+                initialValues={{ cl_taken: "1", pl_taken: "0", month: 1 }}
                 onSubmit={handleLogin}
                 validationSchema={leaveValidationSchema}
             >
