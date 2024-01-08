@@ -33,6 +33,7 @@ export default LeaveHistoryDashboard = ({ navigation }) => {
 
     const getHistoryData = async () => {
         let res = await getAllManualLists();
+        console.log("res::", res);
         let cloneHistory = [...history];
         cloneHistory = cloneHistory.map((item) => {
             if (res.length) {
@@ -51,11 +52,13 @@ export default LeaveHistoryDashboard = ({ navigation }) => {
             totalLeaveOnMonthStart = item.available_on_month_end;
             return item;
         });
+        console.log("------------------------cloneHistory::", cloneHistory);
         setHistory(cloneHistory);
         setLoaded(true)
     };
 
     useEffect(() => {
+        console.log("=============================================");
         getHistoryData();
     }, []);
 

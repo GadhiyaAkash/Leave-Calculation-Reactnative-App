@@ -1,11 +1,8 @@
-import { useField, useFormikContext } from "formik";
 import React, { useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 const DropdownElement = (props) => {
 
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
-    const { setFieldValue } = useFormikContext();
     const { field, form } = props;
 
     const inputStyle = [
@@ -25,11 +22,12 @@ const DropdownElement = (props) => {
             {...field}
             {...props}
             open={open}
-            setOpen={setOpen}
+            onPress={setOpen}
             value={field.value}
             items={props.options}
             setValue={(val) => {
                 form.setFieldValue(field.name, val());
+                setOpen(false)
             }}
             style={inputStyle}
         />

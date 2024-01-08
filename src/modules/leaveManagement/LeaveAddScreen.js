@@ -9,8 +9,8 @@ import { insertProcedures } from "../../core/localDatabase/SqlQuery";
 import { Months } from "./constant";
 
 const leaveValidationSchema = ValidationSchema([
-    { fieldName: "cl_taken", validationType: "required" },
-    { fieldName: "pl_taken", validationType: "required" }
+    // { fieldName: "cl_taken", validationType: "required" },
+    // { fieldName: "pl_taken", validationType: "required" }
 ]);
 
 /**
@@ -34,11 +34,14 @@ export default LeaveAddScreen = ({ navigation }) => {
         return Months.findIndex((mm) => mm.value === month);
     }
     const insertOfflineData = async (data) => {
-        const res = await insertProcedures({
-            id: getIdxFromMonth(data.month) + 1,
-            ...data,
-        });
-        console.log("INTERSETED RES::", res);
+        if (data.cl_taken || data.pl_taken) {
+            data.cl_taken = data.cl_taken || 0;
+            data.pl_taken = data.pl_taken || 0;
+            await insertProcedures({
+                id: getIdxFromMonth(data.month) + 1,
+                ...data,
+            });
+        }
         navigation.navigate("LeaveHistory");
     };
 
@@ -48,7 +51,7 @@ export default LeaveAddScreen = ({ navigation }) => {
                 Add New Leave
             </Text>
             <Formik
-                initialValues={{ cl_taken: "1", pl_taken: "0", month: "January" }}
+                initialValues={{ cl_taken: "", pl_taken: "", month: "January" }}
                 onSubmit={handleLogin}
                 validationSchema={leaveValidationSchema}
             >

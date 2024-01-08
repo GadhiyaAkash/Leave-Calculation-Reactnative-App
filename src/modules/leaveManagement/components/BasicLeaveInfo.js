@@ -46,7 +46,7 @@ export default BasicLeaveInfo = ({history}) => {
 
     useEffect(() => {
         getHistoryData();
-    }, []);
+    }, [history]);
 
     return (
         <FlatList
