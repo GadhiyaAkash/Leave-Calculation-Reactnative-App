@@ -12,9 +12,9 @@ export default LeaveHistoryDashboard = ({ navigation }) => {
 
     return (
         <>
-            <View style={{ height: "auto", marginBottom: 10 }}>
+            {/* <View style={{ height: "auto", marginBottom: 10 }}>
                 <BasicLeaveInfo />
-            </View>
+            </View> */}
             <Text h4 style={styles.leaveHistoryTitle}>Leave History</Text>
             <LeaveHistoryList />
             <View style={{ flexGrow: 1 }}>

@@ -6,7 +6,7 @@ const statements = {
         sql` CREATE TABLE IF NOT EXISTS ${DBTABLES.LEAVEHISTORY} 
         (
             id INTEGER PRIMARY KEY NOT NULL,
-            month INTEGER NOT NULL,
+            month TEXT NOT NULL,
             cl_taken TEXT NOT NULL,
             pl_taken TEXT NOT NULL,
             timestamp INTEGER NOT NULL

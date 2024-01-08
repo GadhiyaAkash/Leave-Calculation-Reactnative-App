@@ -6,6 +6,7 @@ import ValidationSchema from "../../core/validationSchema/ValidationSchema";
 import TextInputElement from "../../core/formElements/TextInputElement";
 import DropdownElement from "../../core/formElements/DropdownElement";
 import { insertProcedures } from "../../core/localDatabase/SqlQuery";
+import { Months } from "./constant";
 
 const leaveValidationSchema = ValidationSchema([
     { fieldName: "cl_taken", validationType: "required" },
@@ -20,37 +21,26 @@ const leaveValidationSchema = ValidationSchema([
  */
 export default LeaveAddScreen = ({ navigation }) => {
 
+    const [monthOption, setMonthOption] = useState(Months);
+
     const handleLogin = (value) => {
-        console.log("values/-------------::", value);
         insertOfflineData(value);
     };
     const cancelLeaveAdd = () => {
         navigation.navigate("LeaveHistory");
     };
 
+    const getIdxFromMonth = (month) => {
+        return Months.findIndex((mm) => mm.value === month);
+    }
     const insertOfflineData = async (data) => {
         const res = await insertProcedures({
-            id: data.month,
+            id: getIdxFromMonth(data.month) + 1,
             ...data,
         });
         console.log("INTERSETED RES::", res);
-        return res;
+        navigation.navigate("LeaveHistory");
     };
-
-    const [monthOption, setMonthOption] = useState([
-        { label: "January", value: 1 },
-        { label: "February", value: 2 },
-        { label: "March", value: 3 },
-        { label: "April", value: 4 },
-        { label: "May", value: 5 },
-        { label: "June", value: 6 },
-        { label: "July", value: 7 },
-        { label: "August", value: 8 },
-        { label: "September", value: 9 },
-        { label: "October", value: 10 },
-        { label: "November", value: 11 },
-        { label: "December", value: 12 }
-    ]);
 
     return (
         <View style={styles.container}>
@@ -58,7 +48,7 @@ export default LeaveAddScreen = ({ navigation }) => {
                 Add New Leave
             </Text>
             <Formik
-                initialValues={{ cl_taken: "1", pl_taken: "0", month: 1 }}
+                initialValues={{ cl_taken: "1", pl_taken: "0", month: "January" }}
                 onSubmit={handleLogin}
                 validationSchema={leaveValidationSchema}
             >

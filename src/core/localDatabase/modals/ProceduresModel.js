@@ -9,7 +9,7 @@ export class ProceduresModel extends BaseModel {
     static get columnMapping() {
         return {
             id: { type: columnTypes.INTEGER },
-            month: { type: columnTypes.INTEGER },
+            month: { type: columnTypes.TEXT },
             cl_taken: { type: columnTypes.TEXT },
             pl_taken: { type: columnTypes.TEXT },
             timestamp: { type: columnTypes.INTEGER, default: () => Date.now() }
