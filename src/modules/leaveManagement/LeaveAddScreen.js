@@ -7,6 +7,7 @@ import TextInputElement from "../../core/formElements/TextInputElement";
 import DropdownElement from "../../core/formElements/DropdownElement";
 import { addOrUpdateLeave, findLeaveHistoryById } from "../../core/localDatabase/SqlQuery";
 import { Months } from "./constant";
+import LoadingButton from "../../core/wrappers/LoadingButton";
 
 const leaveValidationSchema = ValidationSchema([
     // { fieldName: "cl_taken", validationType: "required" },
@@ -22,24 +23,31 @@ const leaveValidationSchema = ValidationSchema([
 export default LeaveAddScreen = ({ navigation }) => {
 
     const [monthOption, setMonthOption] = useState(Months);
+    const [loading, setLoading] = useState(false);
 
     const handleLogin = async (value) => {
-        if (value.cl_taken || value.pl_taken) {
-            value.cl_taken = value.cl_taken || 0;
-            value.pl_taken = value.pl_taken || 0;
+        let params = {...value};
+        setLoading(true);
+        if (params.cl_taken || params.pl_taken) {
+            params.cl_taken = params.cl_taken || 0;
+            params.pl_taken = params.pl_taken || 0;
 
-            let leaveID = getIdxFromMonth(value.month) + 1;
+            let leaveID = getIdxFromMonth(params.month) + 1;
             let hasLeaveHistory = await findLeaveHistoryById(leaveID);
             if (hasLeaveHistory) {
-                value.cl_taken = parseFloat(value.cl_taken) + parseFloat(hasLeaveHistory.cl_taken);
-                value.pl_taken = parseFloat(value.pl_taken) + parseFloat(hasLeaveHistory.pl_taken);
+                params.cl_taken = parseFloat(params.cl_taken) + parseFloat(hasLeaveHistory.cl_taken);
+                params.pl_taken = parseFloat(params.pl_taken) + parseFloat(hasLeaveHistory.pl_taken);
             }
             await addOrUpdateLeave({
                 id: leaveID,
-                ...value,
+                ...params,
             });
         }
-        moveToHistoryPage();
+        let timer = setTimeout(() => {
+            moveToHistoryPage();
+            setLoading(false);
+            clearTimeout(timer);
+        }, 500);
     };
     const moveToHistoryPage = () => {
         navigation.navigate("LeaveHistory");
@@ -70,17 +78,27 @@ export default LeaveAddScreen = ({ navigation }) => {
                             component={TextInputElement}
                             placeholder="Enter CL (Casual Leave)"
                             name="cl_taken"
+                            inputMode="numeric"
                             inputContainerStyle={styles.textInput}
                         />
                         <Field
                             component={TextInputElement}
                             placeholder="Enter PL (Paid Leave)"
                             name="pl_taken"
+                            inputMode="numeric"
                             inputContainerStyle={styles.textInput}
                         />
                         <View style={styles.buttonsContainer}>
-                            <Button type="outline" onPress={moveToHistoryPage}>Cancel</Button>
-                            <Button onPress={handleSubmit}>Submit</Button>
+                            <LoadingButton
+                                type="outline"
+                                onPress={moveToHistoryPage}
+                                name="Cancel"
+                            />
+                            <LoadingButton
+                                onPress={handleSubmit}
+                                name="Submit"
+                                loading={loading}
+                            />
                         </View>
                     </>
                 )}
