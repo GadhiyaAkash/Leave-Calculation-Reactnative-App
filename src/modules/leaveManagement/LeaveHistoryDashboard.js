@@ -1,4 +1,4 @@
-import { FAB, Text } from "@rneui/themed";
+import { FAB, Text, useTheme } from "@rneui/themed";
 import React, { useCallback, useEffect, useState } from "react";
 import { RefreshControl, ScrollView, StyleSheet, View } from "react-native";
 import LeaveHistoryList from "./components/LeaveHistoryList";
@@ -10,7 +10,7 @@ export default LeaveHistoryDashboard = ({ navigation }) => {
     const [loaded, setLoaded] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
     const [history, setHistory] = useState([]);
-
+    const { theme } = useTheme();
     let totalLeaveOnMonthStart = 0;
     const monthlyLeave = 1.25;
 
@@ -83,6 +83,7 @@ export default LeaveHistoryDashboard = ({ navigation }) => {
                 visible={true}
                 icon={{ name: 'add', color: 'white' }}
                 placement="right"
+                color={theme.colors.primary}
                 onPress={handleFabPress}
             />
         </>
