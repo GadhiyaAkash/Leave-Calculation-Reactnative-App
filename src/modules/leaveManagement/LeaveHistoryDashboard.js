@@ -43,7 +43,7 @@ export default LeaveHistoryDashboard = ({ navigation }) => {
     };
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            setHistory([]);
+            totalLeaveOnMonthStart = 0;
             getHistoryData();
         });
     
