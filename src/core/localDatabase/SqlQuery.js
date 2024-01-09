@@ -1,6 +1,6 @@
 import { ProceduresModel } from "./modals/ProceduresModel";
 
-export function insertProcedures(params) {
+export function addOrUpdateLeave(params) {
     return new Promise((resolve, reject) => {
         ProceduresModel.repository.databaseLayer
             .bulkInsertOrReplace([
@@ -36,6 +36,19 @@ export function removeHistory() {
             .destroyAll()
             .then(() => {
                 resolve();
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
+export function findLeaveHistoryById(id) {
+    return new Promise((resolve, reject) => {
+        ProceduresModel.repository
+            .find(id)
+            .then((rows) => {
+                resolve(rows);
             })
             .catch((error) => {
                 reject(error);

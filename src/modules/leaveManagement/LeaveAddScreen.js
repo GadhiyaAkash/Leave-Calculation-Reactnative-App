@@ -5,7 +5,7 @@ import { StyleSheet, TextInput, View } from "react-native"
 import ValidationSchema from "../../core/validationSchema/ValidationSchema";
 import TextInputElement from "../../core/formElements/TextInputElement";
 import DropdownElement from "../../core/formElements/DropdownElement";
-import { insertProcedures } from "../../core/localDatabase/SqlQuery";
+import { addOrUpdateLeave, findLeaveHistoryById } from "../../core/localDatabase/SqlQuery";
 import { Months } from "./constant";
 
 const leaveValidationSchema = ValidationSchema([
@@ -23,27 +23,29 @@ export default LeaveAddScreen = ({ navigation }) => {
 
     const [monthOption, setMonthOption] = useState(Months);
 
-    const handleLogin = (value) => {
-        insertOfflineData(value);
+    const handleLogin = async (value) => {
+        if (value.cl_taken || value.pl_taken) {
+            value.cl_taken = value.cl_taken || 0;
+            value.pl_taken = value.pl_taken || 0;
+
+            let leaveID = getIdxFromMonth(value.month) + 1;
+            let hasLeaveHistory = await findLeaveHistoryById(leaveID);
+            if (hasLeaveHistory) {
+                value.cl_taken = parseFloat(value.cl_taken) + parseFloat(hasLeaveHistory.cl_taken);
+                value.pl_taken = parseFloat(value.pl_taken) + parseFloat(hasLeaveHistory.pl_taken);
+            }
+            await addOrUpdateLeave({
+                id: leaveID,
+                ...value,
+            });
+        }
+        moveToHistoryPage();
     };
-    const cancelLeaveAdd = () => {
+    const moveToHistoryPage = () => {
         navigation.navigate("LeaveHistory");
     };
 
-    const getIdxFromMonth = (month) => {
-        return Months.findIndex((mm) => mm.value === month);
-    }
-    const insertOfflineData = async (data) => {
-        if (data.cl_taken || data.pl_taken) {
-            data.cl_taken = data.cl_taken || 0;
-            data.pl_taken = data.pl_taken || 0;
-            await insertProcedures({
-                id: getIdxFromMonth(data.month) + 1,
-                ...data,
-            });
-        }
-        navigation.navigate("LeaveHistory");
-    };
+    const getIdxFromMonth = (month) => Months.findIndex((mm) => mm.value === month);
 
     return (
         <View style={styles.container}>
@@ -77,7 +79,7 @@ export default LeaveAddScreen = ({ navigation }) => {
                             inputContainerStyle={styles.textInput}
                         />
                         <View style={styles.buttonsContainer}>
-                            <Button type="outline" onPress={cancelLeaveAdd}>Cancel</Button>
+                            <Button type="outline" onPress={moveToHistoryPage}>Cancel</Button>
                             <Button onPress={handleSubmit}>Submit</Button>
                         </View>
                     </>

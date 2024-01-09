@@ -20,7 +20,7 @@ export class DBMigrations {
     }
     static async migrate() {
         const migrations = new Migrations(DBNAME, statements);
-        console.log("migrated 1");
+        console.log("Database migration done");
         return await migrations.migrate();
     }
 }

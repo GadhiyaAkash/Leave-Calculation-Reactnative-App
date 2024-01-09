@@ -3,12 +3,11 @@ import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
 export default BasicLeaveInfo = ({ history }) => {
-    const [basicInfo, setBasicInfo] = useState([
+    const [basicInfo, setBasicInfo] = useState([]);
 
-    ]);
-
-    let totalLeaveOnMonthStart = 0;
-    let clTaken = 0, plTaken = 0;
+    let totalLeaveOnMonthStart = 0,
+        clTaken = 0,
+        plTaken = 0;
 
     const getHistoryData = async () => {
         let cloneHistory = [...history];
@@ -22,7 +21,12 @@ export default BasicLeaveInfo = ({ history }) => {
             plTaken = item.pl_taken + plTaken;
             return item;
         });
-        var dummyArray = [{
+        setBasicInfo([{
+            id: 'carray_forward_leave',
+            title: 'Carray Forward Leave',
+            value: 0,
+        },
+        {
             id: 'cl_taken',
             title: 'CL Taken',
             value: clTaken
@@ -34,15 +38,7 @@ export default BasicLeaveInfo = ({ history }) => {
             id: 'total_available',
             title: 'Total Available Leave',
             value: totalLeaveOnMonthStart,
-        }];
-        let cloneInfo = [{
-            id: 'carray_forward_leave',
-            title: 'Carray Forward Leave',
-            value: 0,
-        }];
-        cloneInfo = [...cloneInfo, ...dummyArray];
-        console.log("1111", cloneInfo);
-        setBasicInfo(cloneInfo);
+        }]);
     };
 
     useEffect(() => {
@@ -72,7 +68,7 @@ export default BasicLeaveInfo = ({ history }) => {
 
 const styles = StyleSheet.create({
     cardContainer: {
-        width:220
+        width: 220
     },
     card: {
         minHeight: 120
