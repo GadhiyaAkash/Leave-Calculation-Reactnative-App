@@ -9,7 +9,6 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@react-native-google-signin/google-signin": "^10.1.1",
     "@react-native-picker/picker": "2.4.10",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
@@ -20,6 +19,7 @@
     "expo-sqlite-orm": "^2.1.0",
     "expo-status-bar": "~1.6.0",
     "formik": "^2.4.5",
+    "lottie-react-native": "5.1.6",
     "react": "18.2.0",
     "react-native": "0.72.6",
     "react-native-dropdown-picker": "^5.4.6",
