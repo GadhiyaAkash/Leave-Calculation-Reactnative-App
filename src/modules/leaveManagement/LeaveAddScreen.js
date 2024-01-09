@@ -2,17 +2,11 @@ import { Button, Text } from "@rneui/themed"
 import { Field, Formik } from "formik"
 import React, { useState } from "react"
 import { StyleSheet, TextInput, View } from "react-native"
-import ValidationSchema from "../../core/validationSchema/ValidationSchema";
 import TextInputElement from "../../core/formElements/TextInputElement";
 import DropdownElement from "../../core/formElements/DropdownElement";
 import { addOrUpdateLeave, findLeaveHistoryById } from "../../core/localDatabase/SqlQuery";
 import { Months } from "./constant";
 import LoadingButton from "../../core/wrappers/LoadingButton";
-
-const leaveValidationSchema = ValidationSchema([
-    // { fieldName: "cl_taken", validationType: "required" },
-    // { fieldName: "pl_taken", validationType: "required" }
-]);
 
 /**
  * Create a form with list of below input elements
@@ -63,7 +57,6 @@ export default LeaveAddScreen = ({ navigation }) => {
             <Formik
                 initialValues={{ cl_taken: "", pl_taken: "", month: "January" }}
                 onSubmit={handleLogin}
-                validationSchema={leaveValidationSchema}
             >
                 {({ handleSubmit, values }) => (
                     <>

@@ -1,15 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Image, StyleSheet, Text } from "react-native";
 
 function HeaderTitle() {
+    
+    const getPersonalData = async () => {
+        let res = await getPersonalInfo();
+    };
+
+    useEffect(() => {
+        getPersonalData();
+    }, [])
     return (
         <>
-            <Image
+            {/* <Image
                 style={style.imageLogo}
                 source={{
                     uri: 'https://reactnative.dev/img/tiny_logo.png',
                 }}
-            />
+            /> */}
             <Text style={{ paddingLeft: 10, fontSize: 20 }}>Leave Management</Text>
         </>
     );

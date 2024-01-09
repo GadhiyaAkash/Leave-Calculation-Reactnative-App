@@ -7,9 +7,10 @@ import LottieViewHeader from "./components/LottieViewHeader";
 import { Field, Formik } from "formik";
 import ValidationSchema from "../../core/validationSchema/ValidationSchema";
 import TextInputElement from "../../core/formElements/TextInputElement";
+import { savePersonalInfo } from "../../core/localDatabase/SqlQuery";
 
 const startUpScreenValidation = ValidationSchema([
-    { fieldName: "name", validationType: "required" },
+    { fieldName: "full_name", validationType: "required" },
 ]);
 
 const StartupScreen = ({ navigation }) => {
@@ -18,9 +19,17 @@ const StartupScreen = ({ navigation }) => {
 
     const handleStartUpFields = async (value) => {
         console.log("values::", value);
+        let params = { ...value };
+
+        let res = await savePersonalInfo({
+            ...params,
+        });
+
+        console.log("res::", res);
 
         let timer = setTimeout(() => {
             setLoading(false);
+            navigation.navigate("LeaveHistory");
             clearTimeout(timer);
         }, 500);
     }
@@ -29,7 +38,7 @@ const StartupScreen = ({ navigation }) => {
             <LottieViewHeader />
             <View style={styles.childContainer}>
                 <Formik
-                    initialValues={{ name: "" }}
+                    initialValues={{ full_name: "" }}
                     onSubmit={handleStartUpFields}
                     validationSchema={startUpScreenValidation}
                 >
@@ -39,7 +48,7 @@ const StartupScreen = ({ navigation }) => {
                                 <Field
                                     component={TextInputElement}
                                     title="Enter Full Name"
-                                    name="name"
+                                    name="full_name"
                                     inputContainerStyle={styles.textInput}
                                 />
                                 <Field
