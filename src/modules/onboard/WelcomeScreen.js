@@ -5,7 +5,7 @@ import SafeAreaContainer from "../../core/wrappers/SafeAreaContainer";
 import LoadingButton from "../../core/wrappers/LoadingButton";
 import LottieViewHeader from "./components/LottieViewHeader";
 
-const WelcomeScreen = () => {
+const WelcomeScreen = ({ navigation }) => {
     const styles = useStyles();
     return (
         <SafeAreaContainer>
@@ -13,7 +13,7 @@ const WelcomeScreen = () => {
             <View style={styles.childContainer}>
                 <Text h2>Welcome!</Text>
                 <Text style={styles.subTitle}>Consolidate leave applications for streamlined tracking</Text>
-                <LoadingButton name="Get Started" />
+                <LoadingButton name="Get Started" onPress={() => { navigation.navigate("StartupScreen") }}/>
             </View>
         </SafeAreaContainer>
     )

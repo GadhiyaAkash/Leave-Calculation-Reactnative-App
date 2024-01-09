@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, useTheme } from "@rneui/themed";
+import { Input, Text, useTheme } from "@rneui/themed";
 
 /**
  * This component renders a TextInput component.
@@ -29,26 +29,31 @@ function TextInputElement(props) {
     ];
 
     return (
-        <Input
-            value={value}
-            onChangeText={(text) => {
-                let newText = text.replace(regex, "");
-                onChange(name)(newText);
-            }}
-            onBlur={() => {
-                setFieldTouched(name);
-                onBlur(name);
-            }}
-            errorStyle={{
-                color: "#FF0000",
-                fontWeight: "normal",
-            }}
-            errorMessage={hasError && errors[name]}
-            style={inputStyle}
-            {...inputProps}
-            disabled={disabled}
+        <>
+            {
+                props.title && <Text style={{ marginBottom: 5, fontWeight: "bold" }}>{props.title}</Text>
+            }
+            <Input
+                value={value}
+                onChangeText={(text) => {
+                    let newText = text.replace(regex, "");
+                    onChange(name)(newText);
+                }}
+                onBlur={() => {
+                    setFieldTouched(name);
+                    onBlur(name);
+                }}
+                errorStyle={{
+                    color: "#FF0000",
+                    fontWeight: "normal",
+                }}
+                errorMessage={hasError && errors[name]}
+                style={inputStyle}
+                {...inputProps}
+                disabled={disabled}
             // cursorColor={theme.colors.primary}
-        />
+            />
+        </>
     );
 }
 

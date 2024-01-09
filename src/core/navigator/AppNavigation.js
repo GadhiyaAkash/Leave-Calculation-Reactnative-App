@@ -7,6 +7,8 @@ import HeaderTitle from './HeaderTitle';
 import LeaveHistoryDashboard from '../../modules/leaveManagement/LeaveHistoryDashboard';
 import LeaveAddScreen from '../../modules/leaveManagement/LeaveAddScreen';
 import WelcomeScreen from '../../modules/onboard/WelcomeScreen';
+import StartupScreen from '../../modules/onboard/StartupScreen';
+import LottieViewHeader from '../../modules/onboard/components/LottieViewHeader';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,8 +23,9 @@ function AppNavigation() {
                             hasUserName ?
                                 <Stack.Group screenOptions={{
                                     headerShown: false,
-                                    animation: 'none',
+                                    animation: 'none'
                                 }}>
+                                    <Stack.Screen name="StartupScreen" component={StartupScreen} />
                                     <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
                                 </Stack.Group>
                                 :
