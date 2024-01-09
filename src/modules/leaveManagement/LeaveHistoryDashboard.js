@@ -1,6 +1,6 @@
-import { Card, FAB, Text } from "@rneui/themed";
-import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FAB, Text } from "@rneui/themed";
+import React, { useCallback, useEffect, useState } from "react";
+import { RefreshControl, ScrollView, StyleSheet, View } from "react-native";
 import LeaveHistoryList from "./components/LeaveHistoryList";
 import BasicLeaveInfo from "./components/BasicLeaveInfo";
 import { getAllManualLists } from "../../core/localDatabase/SqlQuery";
@@ -8,15 +8,15 @@ import { defaultHistoryData } from "./constant";
 
 export default LeaveHistoryDashboard = ({ navigation }) => {
     const [loaded, setLoaded] = useState(false);
-    const handleFabPress = () => {
-        navigation.navigate("AddLeave")
-    }
-
-    
+    const [refreshing, setRefreshing] = useState(false);
     const [history, setHistory] = useState([]);
 
     let totalLeaveOnMonthStart = 0;
     const monthlyLeave = 1.25;
+
+    const handleFabPress = () => {
+        navigation.navigate("AddLeave")
+    }
 
     const getHistoryData = async () => {
         let res = await getAllManualLists();
@@ -39,41 +39,60 @@ export default LeaveHistoryDashboard = ({ navigation }) => {
             return item;
         });
         setHistory(cloneHistory);
-        setLoaded(true)
+        setLoaded(true);
+        setRefreshing(false);
     };
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        reloadData();
+    }, []);
+
+    const reloadData = () => {
+        totalLeaveOnMonthStart = 0;
+        getHistoryData();
+    }
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            totalLeaveOnMonthStart = 0;
-            getHistoryData();
+            reloadData();
         });
-    
-        // Return the function to unsubscribe from the event so it gets removed on unmount
         return unsubscribe;
-      }, [navigation]);
+    }, [navigation]);
 
     return (
         <>
-            <View style={{ height: "auto", marginBottom: 10 }}>
-                {
-                    loaded &&
-                    <BasicLeaveInfo history={history} />
-                }
-            </View>
-            <Text h4 style={styles.leaveHistoryTitle}>Leave History</Text>
-            <LeaveHistoryList history={history} />
-            <View style={{ flexGrow: 1 }}>
-                <FAB
-                    visible={true}
-                    icon={{ name: 'add', color: 'white' }}
-                    placement="right"
-                    onPress={handleFabPress}
-                />
-            </View>
+            <ScrollView
+                contentContainerStyle={styles.contentContainer}
+                refreshControl={
+                    <RefreshControl progressViewOffset={20} refreshing={refreshing} onRefresh={onRefresh} />
+                }>
+                <>
+                    {
+                        loaded &&
+                        <>
+                            <View style={{ height: "auto", marginBottom: 10 }}>
+                                <BasicLeaveInfo history={history} />
+                            </View>
+                            <Text h4 style={styles.leaveHistoryTitle}>Leave History</Text>
+                            <LeaveHistoryList history={history} />
+                        </>
+                    }
+                </>
+            </ScrollView>
+            <FAB
+                visible={true}
+                icon={{ name: 'add', color: 'white' }}
+                placement="right"
+                onPress={handleFabPress}
+            />
         </>
     );
 }
 
 const styles = StyleSheet.create({
+    contentContainer: {
+        paddingBottom: 15
+    },
     cardContainer: {
         flexGrow: 1,
         width: '50%'

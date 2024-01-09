@@ -5,7 +5,22 @@ import LeaveHistoryLabel from "./LeaveHistoryLabel";
 
 export default LeaveHistoryList = ({ history }) => {
     return (<>
-        <FlatList
+        <View>
+            {
+                history.map((item) => {
+                    return (
+                        <Card key={item.id}>
+                            <Card.Title>{item.month}</Card.Title>
+                            <Card.Divider />
+                            <View style={{ flexDirection: 'row', flexWrap: "wrap" }}>
+                                <LeaveHistoryLabel item={item} />
+                            </View>
+                        </Card>
+                    )
+                })
+            }
+        </View>
+        {/* <FlatList
             data={history}
             renderItem={({ item }) =>
                 <View>
@@ -19,6 +34,6 @@ export default LeaveHistoryList = ({ history }) => {
                 </View>
             }
             keyExtractor={item => item.id}
-        />
+        /> */}
     </>)
 }
