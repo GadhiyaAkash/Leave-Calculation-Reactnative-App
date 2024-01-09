@@ -6,7 +6,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import HeaderTitle from './HeaderTitle';
 import LeaveHistoryDashboard from '../../modules/leaveManagement/LeaveHistoryDashboard';
 import LeaveAddScreen from '../../modules/leaveManagement/LeaveAddScreen';
-import OnboardScreen from '../../modules/onboard/OnboardScreen';
+import WelcomeScreen from '../../modules/onboard/WelcomeScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,7 +23,7 @@ function AppNavigation() {
                                     headerShown: false,
                                     animation: 'none',
                                 }}>
-                                    <Stack.Screen name="OnboardScreen" component={OnboardScreen} />
+                                    <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
                                 </Stack.Group>
                                 :
                                 <Stack.Group screenOptions={{
