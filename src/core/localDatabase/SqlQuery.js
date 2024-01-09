@@ -1,8 +1,8 @@
-import { ProceduresModel } from "./modals/ProceduresModel";
+import { LeaveHistoryModel } from "./modals/LeaveHistoryModel";
 
 export function addOrUpdateLeave(params) {
     return new Promise((resolve, reject) => {
-        ProceduresModel.repository.databaseLayer
+        LeaveHistoryModel.repository.databaseLayer
             .bulkInsertOrReplace([
                 {
                     timestamp: Date.now(),
@@ -19,7 +19,7 @@ export function addOrUpdateLeave(params) {
 
 export function getAllManualLists() {
     return new Promise((resolve, reject) => {
-        ProceduresModel.repository
+        LeaveHistoryModel.repository
             .query({})
             .then((rows) => {
                 resolve(rows);
@@ -32,7 +32,7 @@ export function getAllManualLists() {
 
 export function removeHistory() {
     return new Promise((resolve, reject) => {
-        ProceduresModel.repository
+        LeaveHistoryModel.repository
             .destroyAll()
             .then(() => {
                 resolve();
@@ -45,7 +45,7 @@ export function removeHistory() {
 
 export function findLeaveHistoryById(id) {
     return new Promise((resolve, reject) => {
-        ProceduresModel.repository
+        LeaveHistoryModel.repository
             .find(id)
             .then((rows) => {
                 resolve(rows);

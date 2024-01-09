@@ -1,7 +1,7 @@
 import { columnTypes } from "expo-sqlite-orm";
 import BaseModel from "./BaseModel";
 import { DBTABLES } from "../DBonfig";
-export class ProceduresModel extends BaseModel {
+export class LeaveHistoryModel extends BaseModel {
 
     static get tableName() {
         return DBTABLES.LEAVEHISTORY;
