@@ -6,7 +6,7 @@ function HeaderTitle() {
     const user = useSelector((state) => state.user.user)
     return (
         <>
-            <Text style={{ paddingLeft: 10, fontSize: 20 }}>Welcome {user.full_name}</Text>
+            <Text style={{ fontSize: 20 }}>Welcome {user.full_name}</Text>
         </>
     );
 }

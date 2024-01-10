@@ -18,7 +18,7 @@ export function addOrUpdateLeave(params) {
     });
 }
 
-export function getAllManualLists() {
+export function getAllHistory() {
     return new Promise((resolve, reject) => {
         LeaveHistoryModel.repository
             .query({})

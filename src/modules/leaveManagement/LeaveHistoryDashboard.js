@@ -3,23 +3,30 @@ import React, { useCallback, useEffect, useState } from "react";
 import { RefreshControl, ScrollView, StyleSheet, View } from "react-native";
 import LeaveHistoryList from "./components/LeaveHistoryList";
 import BasicLeaveInfo from "./components/BasicLeaveInfo";
-import { getAllManualLists } from "../../core/localDatabase/SqlQuery";
+import { getAllHistory } from "../../core/localDatabase/SqlQuery";
 import { defaultHistoryData } from "./constant";
+import { useSelector } from "react-redux";
 
 export default LeaveHistoryDashboard = ({ navigation }) => {
+    const [basicInfo, setBasicInfo] = useState({});
     const [loaded, setLoaded] = useState(false);
+    const user = useSelector((state) => state.user.user)
     const [refreshing, setRefreshing] = useState(false);
     const [history, setHistory] = useState([]);
     const { theme } = useTheme();
-    let totalLeaveOnMonthStart = 0;
+    let totalLeaveOnMonthStart = user.carray_forward_leave;
     const monthlyLeave = 1.25;
+    let clTaken = 0;
+    let plTaken = 0;
 
     const handleFabPress = () => {
         navigation.navigate("AddLeave")
     }
 
     const getHistoryData = async () => {
-        let res = await getAllManualLists();
+        let res = await getAllHistory();
+        // console.log("ALL SAVED HISTORY:::", res);
+        console.log("totalLeaveOnMonthStart::", totalLeaveOnMonthStart);
         let cloneHistory = [...defaultHistoryData];
         cloneHistory = cloneHistory.map((item) => {
             if (res.length) {
@@ -33,25 +40,48 @@ export default LeaveHistoryDashboard = ({ navigation }) => {
             }
             item.total_leave_on_month_start = totalLeaveOnMonthStart;
             item.leave_added = monthlyLeave;
-            item.available_on_month_end = item.total_leave_on_month_start + item.leave_added - item.cl_taken - item.pl_taken;
-
+            item.available_on_month_end = parseFloat(item.total_leave_on_month_start) + parseFloat(item.leave_added) - parseFloat(item.cl_taken) - parseFloat(item.pl_taken);
             totalLeaveOnMonthStart = item.available_on_month_end;
+            clTaken = parseFloat(item.cl_taken) + clTaken;
+            plTaken = parseFloat(item.pl_taken) + plTaken;
             return item;
         });
         setHistory(cloneHistory);
+        setBasicInfo([{
+            id: 'carray_forward_leave',
+            title: 'Carray Forward Leave',
+            value: parseFloat(user.carray_forward_leave),
+        },
+        {
+            id: 'cl_taken',
+            title: 'CL Taken',
+            value: clTaken
+        }, {
+            id: 'pl_taken',
+            title: 'PL Taken',
+            value: plTaken,
+        }, {
+            id: 'total_available',
+            title: 'Total Available Leave',
+            value: totalLeaveOnMonthStart,
+        }]);
         setLoaded(true);
         setRefreshing(false);
     };
 
     const onRefresh = useCallback(() => {
+        setLoaded(false);
         setRefreshing(true);
         reloadData();
     }, []);
 
     const reloadData = () => {
-        totalLeaveOnMonthStart = 0;
+        totalLeaveOnMonthStart = user.carray_forward_leave;
+        clTaken = 0;
+        plTaken = 0;
         getHistoryData();
     }
+
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             reloadData();
@@ -71,7 +101,7 @@ export default LeaveHistoryDashboard = ({ navigation }) => {
                         loaded &&
                         <>
                             <View style={{ height: "auto", marginBottom: 10 }}>
-                                <BasicLeaveInfo history={history} />
+                                <BasicLeaveInfo basicInfo={basicInfo} />
                             </View>
                             <Text h4 style={styles.leaveHistoryTitle}>Leave History</Text>
                             <LeaveHistoryList history={history} />

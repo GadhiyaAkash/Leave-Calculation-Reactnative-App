@@ -14,7 +14,6 @@ const Stack = createNativeStackNavigator();
 
 function AppNavigation() {
     const user = useSelector((state) => state.user.user);
-    console.log("user::", user);
     return (
         <>
             <SafeAreaProvider>
