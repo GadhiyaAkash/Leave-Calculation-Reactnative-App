@@ -1,6 +1,6 @@
 import { Text, makeStyles } from "@rneui/themed";
 import React, { useState } from "react";
-import { View } from "react-native";
+import { Alert, Keyboard, KeyboardAvoidingView, ScrollView, TouchableWithoutFeedback, View } from "react-native";
 import SafeAreaContainer from "../../core/wrappers/SafeAreaContainer";
 import LoadingButton from "../../core/wrappers/LoadingButton";
 import LottieViewHeader from "./components/LottieViewHeader";
@@ -8,6 +8,8 @@ import { Field, Formik } from "formik";
 import ValidationSchema from "../../core/validationSchema/ValidationSchema";
 import TextInputElement from "../../core/formElements/TextInputElement";
 import { savePersonalInfo } from "../../core/localDatabase/SqlQuery";
+import { useDispatch } from "react-redux";
+import { setUserDetails } from "../../core/redux/slices/userSlice";
 
 const startUpScreenValidation = ValidationSchema([
     { fieldName: "full_name", validationType: "required" },
@@ -16,81 +18,100 @@ const startUpScreenValidation = ValidationSchema([
 const StartupScreen = ({ navigation }) => {
     const styles = useStyles();
     const [loading, setLoading] = useState(false);
-
+    const dispatch = useDispatch()
     const handleStartUpFields = async (value) => {
-        console.log("values::", value);
+        setLoading(true);
         let params = { ...value };
-
+        params.carray_forward_leave = params.carray_forward_leave || 0;
+        
         let res = await savePersonalInfo({
+            id: 1,  //Set Hardcorded value to add or update entries into same table fields
             ...params,
         });
-
-        console.log("res::", res);
-
-        let timer = setTimeout(() => {
+        if (res) {
+            Alert.alert(
+                'Onboard Success!',
+                'Congratulations on successfully completing your onboarding journey.',
+                [{
+                    text: 'Proceed',
+                    onPress: () => {
+                        let timer = setTimeout(() => {
+                            setLoading(false);
+                            dispatch(setUserDetails(res));
+                            clearTimeout(timer);
+                        }, 500);
+                    }
+                }]
+            );
+        } else {
             setLoading(false);
-            navigation.navigate("LeaveHistory");
-            clearTimeout(timer);
-        }, 500);
+        }
     }
+
     return (
-        <SafeAreaContainer>
-            <LottieViewHeader />
-            <View style={styles.childContainer}>
-                <Formik
-                    initialValues={{ full_name: "" }}
-                    onSubmit={handleStartUpFields}
-                    validationSchema={startUpScreenValidation}
-                >
-                    {({ handleSubmit, values }) => (
-                        <View style={styles.formContainer}>
-                            <View>
-                                <Field
-                                    component={TextInputElement}
-                                    title="Enter Full Name"
-                                    name="full_name"
-                                    inputContainerStyle={styles.textInput}
-                                />
-                                <Field
-                                    component={TextInputElement}
-                                    title="Enter Carray Forward Leaves"
-                                    inputMode="numeric"
-                                    name="carray_forward_leave"
-                                    inputContainerStyle={styles.textInput}
-                                />
-                            </View>
-                            <View style={styles.buttonsContainer}>
-                                <LoadingButton
-                                    type="outline"
-                                    onPress={() => { navigation.navigate("WelcomeScreen") }}
-                                    name="Back"
-                                />
-                                <LoadingButton
-                                    onPress={handleSubmit}
-                                    name="Start"
-                                    loading={loading}
-                                />
-                            </View>
-                        </View>
-                    )}
-                </Formik>
-            </View>
-        </SafeAreaContainer>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={styles.container}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <SafeAreaContainer>
+                    <ScrollView style={{ flex: 1 }}>
+                        <LottieViewHeader />
+                        <Formik
+                            initialValues={{ full_name: "" }}
+                            onSubmit={handleStartUpFields}
+                            validationSchema={startUpScreenValidation}
+                        >
+                            {({ handleSubmit, values, errors }) => (
+                                <View style={styles.formContainer}>
+                                    <View>
+                                        <Field
+                                            component={TextInputElement}
+                                            title="Enter Full Name"
+                                            name="full_name"
+                                            inputContainerStyle={styles.textInput}
+                                            autoCapitalize="none"
+                                            returnKeyType="done"
+                                            autoCorrect={false}
+                                        />
+                                        <Field
+                                            component={TextInputElement}
+                                            title="Enter Carray Forward Leaves"
+                                            inputMode="numeric"
+                                            name="carray_forward_leave"
+                                            inputContainerStyle={styles.textInput}
+                                        />
+                                    </View>
+                                    <View style={styles.buttonsContainer}>
+                                        <LoadingButton
+                                            type="outline"
+                                            onPress={() => { navigation.navigate("WelcomeScreen") }}
+                                            name="Back"
+                                        />
+                                        <LoadingButton
+                                            onPress={handleSubmit}
+                                            name="Start"
+                                            loading={loading}
+                                        />
+                                    </View>
+                                </View>
+                            )}
+                        </Formik>
+                    </ScrollView>
+                </SafeAreaContainer>
+            </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     )
 }
 
+
 const useStyles = makeStyles((theme) => ({
-    childContainer: {
-        paddingHorizontal: 20,
-        paddingTop: 50,
-        paddingBottom: 30,
+    container: {
         flex: 1
     },
     formContainer: {
+        paddingHorizontal: 20,
+        paddingTop: 50,
         flex: 1,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
     },
     buttonsContainer: {
         display: "flex",

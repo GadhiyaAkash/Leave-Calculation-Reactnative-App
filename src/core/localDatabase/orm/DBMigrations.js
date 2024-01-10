@@ -14,7 +14,7 @@ const statements = {
     "00000001_create_personalinfo":
         sql` CREATE TABLE IF NOT EXISTS ${DBTABLES.PersonalInfo} 
         (
-            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY NOT NULL,
             full_name TEXT NOT NULL,
             carray_forward_leave TEXT NOT NULL,
             timestamp INTEGER NOT NULL

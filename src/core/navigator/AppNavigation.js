@@ -8,19 +8,20 @@ import LeaveHistoryDashboard from '../../modules/leaveManagement/LeaveHistoryDas
 import LeaveAddScreen from '../../modules/leaveManagement/LeaveAddScreen';
 import WelcomeScreen from '../../modules/onboard/WelcomeScreen';
 import StartupScreen from '../../modules/onboard/StartupScreen';
-import LottieViewHeader from '../../modules/onboard/components/LottieViewHeader';
+import { useSelector } from 'react-redux';
 
 const Stack = createNativeStackNavigator();
 
 function AppNavigation() {
-    let hasUserName = true;
+    const user = useSelector((state) => state.user.user);
+    console.log("user::", user);
     return (
         <>
             <SafeAreaProvider>
                 <NavigationContainer>
                     <Stack.Navigator>
                         {
-                            hasUserName ?
+                            (user == null) ?
                                 <Stack.Group screenOptions={{
                                     headerShown: false,
                                     animation: 'none'

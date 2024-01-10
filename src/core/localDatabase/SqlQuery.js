@@ -66,18 +66,19 @@ export function savePersonalInfo(params) {
                     ...params
                 }
             ])
-            .then((res) => {
-                resolve(res);
+            .then(() => {
+                let userData = async () => await getPersonalInfo();
+                resolve(userData);
             }).catch((error) => {
                 reject(error);
             });
     });
 }
 
-export function getPersonalInfo() {
+export function getPersonalInfo(userId = 1) {
     return new Promise((resolve, reject) => {
         PersonalInfoModel.repository
-            .query({})
+            .find(userId)
             .then((rows) => {
                 resolve(rows);
             })

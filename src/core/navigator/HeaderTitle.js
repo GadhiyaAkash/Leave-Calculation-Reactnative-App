@@ -1,34 +1,14 @@
-import React, { useEffect } from "react";
-import { Image, StyleSheet, Text } from "react-native";
+import React from "react";
+import { StyleSheet, Text } from "react-native";
+import { useSelector } from "react-redux";
 
 function HeaderTitle() {
-    
-    const getPersonalData = async () => {
-        let res = await getPersonalInfo();
-    };
-
-    useEffect(() => {
-        getPersonalData();
-    }, [])
+    const user = useSelector((state) => state.user.user)
     return (
         <>
-            {/* <Image
-                style={style.imageLogo}
-                source={{
-                    uri: 'https://reactnative.dev/img/tiny_logo.png',
-                }}
-            /> */}
-            <Text style={{ paddingLeft: 10, fontSize: 20 }}>Leave Management</Text>
+            <Text style={{ paddingLeft: 10, fontSize: 20 }}>Welcome {user.full_name}</Text>
         </>
     );
 }
-
-const style = StyleSheet.create({
-    imageLogo: {
-        width: 35, 
-        height: 35, 
-        paddingRight: 10
-    } 
-})
 
 export default HeaderTitle;

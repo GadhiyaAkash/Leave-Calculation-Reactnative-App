@@ -51,7 +51,7 @@ function TextInputElement(props) {
                 style={inputStyle}
                 {...inputProps}
                 disabled={disabled}
-            // cursorColor={theme.colors.primary}
+                // cursorColor={theme.colors.primary}
             />
         </>
     );
