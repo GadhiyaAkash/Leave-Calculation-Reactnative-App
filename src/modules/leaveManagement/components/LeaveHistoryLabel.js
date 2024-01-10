@@ -27,7 +27,7 @@ export default LeaveHistoryLabel = ({ item }) => {
             {
                 slugs.map((slug, inx) =>
                     <View key={inx} style={styles.viewCard}>
-                        <Text style={styles.label}>
+                        <Text bold style={styles.label}>
                             {getHistoryContentLabel(slug)}
                         </Text>
                         <Text>
@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
         paddingBottom: 15
     },
     label: {
-        fontWeight: "bold"
+        // fontWeight: "bold",
+        // fontFamily: "Nunito_400Regular",
     }
 });

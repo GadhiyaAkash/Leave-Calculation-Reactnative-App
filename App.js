@@ -7,29 +7,37 @@ import { DBMigrations } from './src/core/localDatabase/orm/DBMigrations';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './src/core/redux/store';
+import { useFonts, Nunito_400Regular, Nunito_700Bold, Nunito_600SemiBold } from '@expo-google-fonts/nunito';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
+  let [fontsLoaded] = useFonts({
+    Nunito_400Regular,
+    Nunito_700Bold,
+    Nunito_600SemiBold,
+  });
+
   useEffect(() => {
     if (!loaded) {
-      DBMigrations.migrate().then(() => {
-        setLoaded(true);
-      }).catch(() => {
-        setLoaded(true);
-      });
+      async () => await DBMigrations.migrate();
+      setLoaded(true);
     }
   }, [])
 
-  return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <ThemeProvider theme={AppTheme}>
-          {
-            loaded &&
-            <AppNavigation></AppNavigation>
-          }
-        </ThemeProvider>
-      </PersistGate>
-    </Provider>
+  return (<>
+    {
+      !!fontsLoaded &&
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <ThemeProvider theme={AppTheme}>
+            {
+              loaded &&
+              <AppNavigation></AppNavigation>
+            }
+          </ThemeProvider>
+        </PersistGate>
+      </Provider>
+    }
+  </>
   );
 }
