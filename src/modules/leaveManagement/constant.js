@@ -27,3 +27,6 @@ export const defaultHistoryData = [
     { id: 11, month: "November", cl_taken: 0, pl_taken: 0 },
     { id: 12, month: "December", cl_taken: 0, pl_taken: 0 }
 ];
+
+export const MonthlyLeaveAdded = 1.25;
+export const TotalCL = 5;

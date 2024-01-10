@@ -4,7 +4,7 @@ import { RefreshControl, ScrollView, StyleSheet, View } from "react-native";
 import LeaveHistoryList from "./components/LeaveHistoryList";
 import BasicLeaveInfo from "./components/BasicLeaveInfo";
 import { getAllHistory } from "../../core/localDatabase/SqlQuery";
-import { defaultHistoryData } from "./constant";
+import { MonthlyLeaveAdded, defaultHistoryData } from "./constant";
 import { useSelector } from "react-redux";
 
 export default LeaveHistoryDashboard = ({ navigation }) => {
@@ -15,7 +15,6 @@ export default LeaveHistoryDashboard = ({ navigation }) => {
     const [history, setHistory] = useState([]);
     const { theme } = useTheme();
     let totalLeaveOnMonthStart = user.carray_forward_leave;
-    const monthlyLeave = 1.25;
     let clTaken = 0;
     let plTaken = 0;
 
@@ -25,8 +24,6 @@ export default LeaveHistoryDashboard = ({ navigation }) => {
 
     const getHistoryData = async () => {
         let res = await getAllHistory();
-        // console.log("ALL SAVED HISTORY:::", res);
-        console.log("totalLeaveOnMonthStart::", totalLeaveOnMonthStart);
         let cloneHistory = [...defaultHistoryData];
         cloneHistory = cloneHistory.map((item) => {
             if (res.length) {
@@ -39,7 +36,7 @@ export default LeaveHistoryDashboard = ({ navigation }) => {
                 }
             }
             item.total_leave_on_month_start = totalLeaveOnMonthStart;
-            item.leave_added = monthlyLeave;
+            item.leave_added = (item.id === 1) ? (5 + MonthlyLeaveAdded) : MonthlyLeaveAdded;
             item.available_on_month_end = parseFloat(item.total_leave_on_month_start) + parseFloat(item.leave_added) - parseFloat(item.cl_taken) - parseFloat(item.pl_taken);
             totalLeaveOnMonthStart = item.available_on_month_end;
             clTaken = parseFloat(item.cl_taken) + clTaken;

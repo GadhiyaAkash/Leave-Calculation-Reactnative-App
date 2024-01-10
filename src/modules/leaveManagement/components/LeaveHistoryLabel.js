@@ -1,11 +1,10 @@
 import React from "react"
 import { Text } from "@rneui/themed"
 import { StyleSheet, View } from "react-native"
+import { MonthlyLeaveAdded, TotalCL } from "../constant";
 
 export default LeaveHistoryLabel = ({ item }) => {
-
     const slugs = ['total_leave_on_month_start', 'leave_added', 'cl_taken', 'pl_taken', 'available_on_month_end']
-
     const getHistoryContentLabel = (slug) => {
         switch (slug) {
             case 'total_leave_on_month_start':
@@ -32,7 +31,9 @@ export default LeaveHistoryLabel = ({ item }) => {
                             {getHistoryContentLabel(slug)}
                         </Text>
                         <Text>
-                            {item[slug]}
+                            {
+                                (item.id == 1 && slug === 'leave_added') ? <Text>{item[slug]} <Text style={{ fontStyle:"italic", fontSize: 12, fontWeight: "bold" }}>({TotalCL}(CL) + {MonthlyLeaveAdded})</Text></Text> : item[slug]
+                            }
                         </Text>
                     </View>
                 )
