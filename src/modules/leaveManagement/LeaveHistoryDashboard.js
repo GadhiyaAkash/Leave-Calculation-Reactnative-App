@@ -4,7 +4,7 @@ import { RefreshControl, ScrollView, StyleSheet, View } from "react-native";
 import LeaveHistoryList from "./components/LeaveHistoryList";
 import BasicLeaveInfo from "./components/BasicLeaveInfo";
 import { getAllHistory } from "../../core/localDatabase/SqlQuery";
-import { MonthlyLeaveAdded, defaultHistoryData } from "./constant";
+import { LEAVE_CONST, MonthlyLeaveAdded, TotalCL, defaultHistoryData } from "./constant";
 import { useSelector } from "react-redux";
 
 export default LeaveHistoryDashboard = ({ navigation }) => {
@@ -45,21 +45,22 @@ export default LeaveHistoryDashboard = ({ navigation }) => {
         });
         setHistory(cloneHistory);
         setBasicInfo([{
-            id: 'carray_forward_leave',
+            id: LEAVE_CONST.CARRAY_FORWARD_LEAVE,
             title: 'Carray Forward Leave',
             value: parseFloat(user.carray_forward_leave),
         },
         {
-            id: 'cl_taken',
-            title: 'CL Taken',
-            value: clTaken
+            id: LEAVE_CONST.CL_TAKEN,
+            title: 'Casual Leave(CL)',
+            remaining: TotalCL,
+            taken: clTaken 
         }, {
-            id: 'pl_taken',
-            title: 'PL Taken',
+            id: LEAVE_CONST.PL_TAKEN,
+            title: 'Earned Leave',
             value: plTaken,
         }, {
-            id: 'total_available',
-            title: 'Total Available Leave',
+            id: LEAVE_CONST.TOTAL_AVAILABLE,
+            title: 'Total Leave',
             value: totalLeaveOnMonthStart,
         }]);
         setLoaded(true);

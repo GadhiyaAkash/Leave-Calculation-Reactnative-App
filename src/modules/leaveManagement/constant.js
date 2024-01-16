@@ -30,3 +30,9 @@ export const defaultHistoryData = [
 
 export const MonthlyLeaveAdded = 1.25;
 export const TotalCL = 5;
+export const LEAVE_CONST = {
+    CARRAY_FORWARD_LEAVE: 'carray_forward_leave',
+    CL_TAKEN: 'cl_taken',
+    PL_TAKEN: 'pl_taken',
+    TOTAL_AVAILABLE: 'total_available'
+}
