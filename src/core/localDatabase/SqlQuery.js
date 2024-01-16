@@ -57,18 +57,20 @@ export function findLeaveHistoryById(id) {
     });
 }
 
-export function savePersonalInfo(params) {
+export function savePersonalInfo(params, id = 1) {
     return new Promise((resolve, reject) => {
+        params = Object.assign({ id }, params);
         PersonalInfoModel.repository.databaseLayer
             .bulkInsertOrReplace([
                 {
                     timestamp: Date.now(),
-                    ...params
+                    ...params, 
                 }
             ])
             .then(() => {
-                let userData = async () => await getPersonalInfo();
-                resolve(userData);
+                getPersonalInfo().then((data) => {
+                    resolve(data);
+                });
             }).catch((error) => {
                 reject(error);
             });

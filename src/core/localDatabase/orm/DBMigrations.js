@@ -11,7 +11,7 @@ const statements = {
             pl_taken TEXT NOT NULL,
             timestamp INTEGER NOT NULL
         );`,
-    "00000001_create_personalinfo":
+    "00000002_create_personalinfo":
         sql` CREATE TABLE IF NOT EXISTS ${DBTABLES.PersonalInfo} 
         (
             id INTEGER PRIMARY KEY NOT NULL,

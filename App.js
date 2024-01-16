@@ -19,8 +19,11 @@ export default function App() {
 
   useEffect(() => {
     if (!loaded) {
-      async () => await DBMigrations.migrate();
-      setLoaded(true);
+      DBMigrations.migrate().then(() => {
+        setLoaded(true);
+      }).catch(() => {
+        setLoaded(true);
+      });
     }
   }, [])
 

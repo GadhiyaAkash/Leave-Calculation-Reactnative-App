@@ -24,11 +24,7 @@ const StartupScreen = ({ navigation }) => {
         let params = { ...value };
         params.carray_forward_leave = params.carray_forward_leave || 0;
         
-        let res = await savePersonalInfo({
-            id: 1,  //Set Hardcorded value to add or update entries into same table fields
-            ...params,
-        });
-        if (res) {
+        savePersonalInfo(params).then((res) => {
             Alert.alert(
                 'Onboard Success!',
                 'Congratulations on successfully completing your onboarding journey.',
@@ -43,9 +39,9 @@ const StartupScreen = ({ navigation }) => {
                     }
                 }]
             );
-        } else {
+        }).catch(()=> {
             setLoading(false);
-        }
+        })
     }
 
     return (
