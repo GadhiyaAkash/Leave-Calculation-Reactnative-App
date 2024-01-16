@@ -27,12 +27,12 @@ export default LeaveHistoryLabel = ({ item }) => {
             {
                 slugs.map((slug, inx) =>
                     <View key={inx} style={styles.viewCard}>
-                        <Text>
+                        <Text bold>
                             {getHistoryContentLabel(slug)}
                         </Text>
                         <Text>
                             {
-                                (item.id == 1 && slug === 'leave_added') ? <Text>{item[slug]} <Text style={{ fontStyle:"italic", fontSize: 12, fontWeight: "bold" }}>({TotalCL}(CL) + {MonthlyLeaveAdded})</Text></Text> : item[slug]
+                                (item.id == 1 && slug === 'leave_added') ? <Text>{item[slug]} <Text style={{ fontStyle: "italic", fontSize: 12, fontWeight: "bold" }}>({TotalCL}(CL) + {MonthlyLeaveAdded})</Text></Text> : item[slug]
                             }
                         </Text>
                     </View>
@@ -44,11 +44,13 @@ export default LeaveHistoryLabel = ({ item }) => {
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: "row", 
-        flexWrap: "wrap"   
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
     viewCard: {
         width: '50%',
-        paddingBottom: 15
+        marginBottom: 10,
+        paddingRight: 10,
     }
 });
