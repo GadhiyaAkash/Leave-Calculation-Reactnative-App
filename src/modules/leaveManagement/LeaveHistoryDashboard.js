@@ -53,7 +53,7 @@ export default LeaveHistoryDashboard = ({ navigation }) => {
             id: LEAVE_CONST.CL_TAKEN,
             title: 'Casual Leave(CL)',
             remaining: TotalCL,
-            taken: clTaken 
+            value: clTaken 
         }, {
             id: LEAVE_CONST.PL_TAKEN,
             title: 'Earned Leave',

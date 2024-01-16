@@ -5,6 +5,13 @@ import { LEAVE_CONST } from "../constant";
 
 export default BasicLeaveInfo = ({ basicInfo }) => {
 
+    const getNextYearTotalLeave = (item) => {
+        let remainingCL = basicInfo.find((o) => { return o.id === LEAVE_CONST.CL_TAKEN; }).value;
+        remainingCL = (remainingCL < 5) ? (5 - remainingCL) : 0; 
+        let totalLeave = (item.value) - remainingCL;
+        return totalLeave;
+    }
+
     return (
         <FlatList
             data={basicInfo}
@@ -17,7 +24,7 @@ export default BasicLeaveInfo = ({ basicInfo }) => {
                         <Card.Divider />
                         <View>
                             {
-                                [LEAVE_CONST.CARRAY_FORWARD_LEAVE, LEAVE_CONST.PL_TAKEN, LEAVE_CONST.TOTAL_AVAILABLE].indexOf(item.id) !== -1 &&
+                                [LEAVE_CONST.CARRAY_FORWARD_LEAVE, LEAVE_CONST.PL_TAKEN].indexOf(item.id) !== -1 &&
                                 <>
                                     <Text style={styles.cardValue}>
                                         {item.value}
@@ -27,8 +34,15 @@ export default BasicLeaveInfo = ({ basicInfo }) => {
                             {
                                 [LEAVE_CONST.CL_TAKEN].indexOf(item.id) !== -1 &&
                                 <View>
-                                    <Text>Taken: {item.taken}</Text>
+                                    <Text>Taken: {item.value}</Text>
                                     <Text>Remaining: {item.remaining}</Text> 
+                                </View>
+                            }
+                            {
+                                [LEAVE_CONST.TOTAL_AVAILABLE].indexOf(item.id) !== -1 &&
+                                <View>
+                                    <Text>Total: {item.value}</Text>
+                                    <Text>For Next Year: {getNextYearTotalLeave(item)}</Text> 
                                 </View>
                             }
                         </View>
