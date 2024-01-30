@@ -32,7 +32,7 @@ function AppNavigation() {
                                 <Stack.Group screenOptions={{
                                     headerBackVisible: false,
                                     animation: 'none',
-                                    headerTitle: (props) => <HeaderTitle {...props} />
+                                    header: (props) => <HeaderTitle {...props} />
                                 }}>
                                     <Stack.Screen name="LeaveHistory" component={LeaveHistoryDashboard} />
                                     <Stack.Screen name="AddLeave" component={LeaveAddScreen} />

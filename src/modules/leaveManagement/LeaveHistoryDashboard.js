@@ -44,25 +44,29 @@ export default LeaveHistoryDashboard = ({ navigation }) => {
             return item;
         });
         setHistory(cloneHistory);
-        setBasicInfo([{
-            id: LEAVE_CONST.CARRAY_FORWARD_LEAVE,
-            title: 'Carray Forward Leave',
-            value: parseFloat(user.carray_forward_leave),
-        },
-        {
-            id: LEAVE_CONST.CL_TAKEN,
-            title: 'Casual Leave(CL)',
-            remaining: TotalCL,
-            value: clTaken 
-        }, {
-            id: LEAVE_CONST.PL_TAKEN,
-            title: 'Earned Leave',
-            value: plTaken,
-        }, {
-            id: LEAVE_CONST.TOTAL_AVAILABLE,
-            title: 'Total Leave',
-            value: totalLeaveOnMonthStart,
-        }]);
+        setBasicInfo([
+            {
+                id: LEAVE_CONST.CL_TAKEN,
+                title: 'Casual Leave(CL)',
+                remaining: TotalCL,
+                value: clTaken
+            },
+            {
+                id: LEAVE_CONST.PL_TAKEN,
+                title: 'Earned Leave',
+                value: plTaken,
+            },
+            {
+                id: LEAVE_CONST.CARRAY_FORWARD_LEAVE,
+                title: 'Carray Forward Leave',
+                value: parseFloat(user.carray_forward_leave),
+            },
+            {
+                id: LEAVE_CONST.TOTAL_AVAILABLE,
+                title: 'Total Leave',
+                value: totalLeaveOnMonthStart,
+            }
+        ]);
         setLoaded(true);
         setRefreshing(false);
     };
