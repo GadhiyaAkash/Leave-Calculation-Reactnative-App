@@ -23,7 +23,6 @@ const StartupScreen = ({ navigation }) => {
         setLoading(true);
         let params = { ...value };
         params.carray_forward_leave = params.carray_forward_leave || 0;
-        
         savePersonalInfo(params).then((res) => {
             Alert.alert(
                 'Onboard Success!',
@@ -50,7 +49,7 @@ const StartupScreen = ({ navigation }) => {
             style={styles.container}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <SafeAreaContainer>
-                    <ScrollView style={{ flex: 1 }}>
+                    <ScrollView style={{ flex: 1 }} keyboardShouldPersistTaps="handled">
                         <LottieViewHeader />
                         <Formik
                             initialValues={{ full_name: "" }}

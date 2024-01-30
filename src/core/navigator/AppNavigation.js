@@ -25,8 +25,8 @@ function AppNavigation() {
                                     headerShown: false,
                                     animation: 'none'
                                 }}>
-                                    <Stack.Screen name="StartupScreen" component={StartupScreen} />
                                     <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+                                    <Stack.Screen name="StartupScreen" component={StartupScreen} />
                                 </Stack.Group>
                                 :
                                 <Stack.Group screenOptions={{
