@@ -3,7 +3,7 @@ import React from "react";
 import { StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { useSelector } from "react-redux";
 
-function HeaderTitle() {
+function HeaderTitle({navigation}) {
     const user = useSelector((state) => state.user.user);
     const { theme } = useTheme();
     const { width } = useWindowDimensions();
@@ -19,7 +19,7 @@ function HeaderTitle() {
             }}
             rightComponent={() => {
                 return (
-                    <Icon name="setting" type="antdesign" color={theme.colors.primary} size={24} />
+                    <Icon name="setting" type="antdesign" onPress={() => navigation.navigate("Settings")} color={theme.colors.primary} size={24} />
                 )
             }}
             backgroundColor={"#fff"}

@@ -9,6 +9,7 @@ import LeaveAddScreen from '../../modules/leaveManagement/LeaveAddScreen';
 import WelcomeScreen from '../../modules/onboard/WelcomeScreen';
 import StartupScreen from '../../modules/onboard/StartupScreen';
 import { useSelector } from 'react-redux';
+import SettingScreen from '../../modules/settings/SettingScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +37,7 @@ function AppNavigation() {
                                 }}>
                                     <Stack.Screen name="LeaveHistory" component={LeaveHistoryDashboard} />
                                     <Stack.Screen name="AddLeave" component={LeaveAddScreen} />
+                                    <Stack.Screen name="Settings" component={SettingScreen} />
                                 </Stack.Group>
                         }
                     </Stack.Navigator>
